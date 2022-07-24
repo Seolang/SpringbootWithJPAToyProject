@@ -7,7 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@Slf4j
+@Slf4j  //log를 뽑아주는 Lombok annotation
 public class HomeController {
 
     @RequestMapping("/")
