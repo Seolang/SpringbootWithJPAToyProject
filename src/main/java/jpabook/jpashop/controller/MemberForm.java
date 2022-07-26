@@ -8,7 +8,7 @@ import javax.validation.constraints.NotEmpty;
 @Getter @Setter
 public class MemberForm {
 
-    @NotEmpty(message = "Member name must be exist")
+    @NotEmpty(message = "멤버 이름은 필수입니다")
     private String name;
 
     private String city;

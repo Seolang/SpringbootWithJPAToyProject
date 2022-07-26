@@ -3,7 +3,6 @@ package jpabook.jpashop.service;
 import jpabook.jpashop.domain.Member;
 import jpabook.jpashop.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,9 +32,9 @@ public class MemberService {
         return member.getId();
     }
 
-    // validation을 하더라도 거의 동시에 등록한다면 통과될 수도 있음. 따라서 username을 unique로 만드는 것을 추천
+    // validation을 하더라도 거의 동시에 등록한다면 통과될 수도 있음. 따라서 name을 unique로 만드는 것을 추천
     private void validateDuplicateMember(Member member) {
-        List<Member> findMembers = memberRepository.findByName(member.getUsername());
+        List<Member> findMembers = memberRepository.findByName(member.getName());
 
         if(!findMembers.isEmpty()) {
             throw new IllegalStateException("Already exist member.");
