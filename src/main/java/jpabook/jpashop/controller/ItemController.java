@@ -65,7 +65,9 @@ public class ItemController {
     @PostMapping("items/{itemId}/edit")
     public String updateItem(@ModelAttribute("form") BookForm form) {
 
-        Book book = new Book();
+        // book은 임의로 생성한 객체라도, DB에서 할당받은 ID가 존재하므로, 준영속 엔티티이다.
+
+        Book book = new Book();     // Controller 에서 엔티티 생성은 가급적 지양하는것이 좋다.
         book.setId(form.getId());
         book.setName(form.getName());
         book.setPrice(form.getPrice());

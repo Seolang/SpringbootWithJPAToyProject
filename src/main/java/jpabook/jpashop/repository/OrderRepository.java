@@ -40,7 +40,7 @@ public class OrderRepository {
 //                .getResultList();
         // 만약 status와 name이 없다면?(null) 에러 발생!
 
-        String jpql = "select o from order o join o.member m";
+        String jpql = "select o from orders o join o.member m";
         boolean isFirstCondition = true;
         
         // 주문 상태 검색
