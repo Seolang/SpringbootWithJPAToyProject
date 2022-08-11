@@ -56,6 +56,18 @@ public class OrderSimpleApiController {
 
     }
 
+    @GetMapping("api/v3/simple-orders")
+    public List<SimpleOrderDto> ordersV3() {
+        
+        // 최초 order 리스트를 요청하는 쿼리 단 한개만 발생함
+        // 실무에서 정말 자주 사용하는 fetch join
+
+        List<Order> orders = orderRepository.findAllWithMemberDelivery();
+        return orders.stream()
+                .map(o -> new SimpleOrderDto(o))
+                .collect(Collectors.toList());
+    }
+
     @Data
     static class SimpleOrderDto {
         private Long orderId;
