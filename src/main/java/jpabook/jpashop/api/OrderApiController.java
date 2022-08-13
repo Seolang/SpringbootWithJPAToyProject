@@ -52,6 +52,11 @@ public class OrderApiController {
         // (order가 각각의 orderItems만큼 뻥튀기된다)
         // 따라서 distinct 문구를 넣으므로써 중복을 제거한다.
 
+        // 1대다 패치조인에서는 페이징을 쓸 수 없다(메모리 오버플로 발생할 수 있음()
+        // 또한 distinct 전 순서로 페이징하므로 부정확함
+
+        // 2개 이상의 1대다 관계에 대한 패치조인은 사용해선 안된다.
+
         List<Order> orders = orderRepository.findAllWithItem();
         List<OrderDto> result = orders.stream()
                 .map(o -> new OrderDto(o))
