@@ -117,4 +117,18 @@ public class OrderRepository {
         ).getResultList();
     }
 
+    public List<Order> findAllWithItem() {
+
+        // JPA와 DB의 Distinct 명령어 차이
+        // DB : 모든 데이터가 중복일 경우에만 중복처리한다(지금 경우엔 DB에서는 orderItems ID가 달라 중복제거 되지 않음)
+        // JPA : Entity ID가 같으면 중복제거를 해준다.
+        return em.createQuery(
+                "select distinct o from Order o" +
+                        " join fetch o.member m" +
+                        " join fetch o.delivery d" +
+                        " join fetch o.orderItems oi" + // order 2개 -> orderitems 4개 = order 4개 (데이터가 2배가 됨)
+                        " join fetch oi.item i", Order.class)
+                .getResultList();
+
+    }
 }

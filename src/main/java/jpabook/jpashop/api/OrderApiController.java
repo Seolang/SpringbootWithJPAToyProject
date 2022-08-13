@@ -45,6 +45,21 @@ public class OrderApiController {
                 .collect(toList());
     }
 
+    @GetMapping("/api/v3/orders")
+    public List<OrderDto> ordersV3() {
+
+        // order와 orderItems를 join fetch 하는 과정에서 데이터가 중복 발생한다.
+        // (order가 각각의 orderItems만큼 뻥튀기된다)
+        // 따라서 distinct 문구를 넣으므로써 중복을 제거한다.
+
+        List<Order> orders = orderRepository.findAllWithItem();
+        List<OrderDto> result = orders.stream()
+                .map(o -> new OrderDto(o))
+                .collect(toList());
+
+        return result;
+    }
+
     @Data
     static class OrderDto {
 
