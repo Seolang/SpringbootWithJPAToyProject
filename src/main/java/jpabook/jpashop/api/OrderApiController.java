@@ -10,6 +10,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
@@ -64,6 +65,31 @@ public class OrderApiController {
 
         return result;
     }
+
+    @GetMapping("/api/v3.1/orders")
+    public List<OrderDto> ordersV3_page(
+            @RequestParam(value = "offset", defaultValue = "0") int offset,
+            @RequestParam(value = "limit", defaultValue = "100") int limit
+    ) {
+
+        // 1. toOne 관계인 member와 delivery에 대한 패치조인만 진행한다.(페이징이 가능하다)
+        // 2. hibernate의 batch size 설정을 한다. => in 쿼리를 사용하여 orderID를 가지는 orderItems 를 batch size 만큼 한번에 가져온다.
+        //                                          또한 orderItemsID를 가지는 item 을 한번에 가져온다.
+        // 결과적으로 1+N+N 쿼리를 1+1+1 쿼리 요청으로 바꾸어준다.
+
+        // %% default batch fetch size 옵션은 컬렉션이나 프록시 객체들을 in 쿼리를 사용하여 한꺼번에 조회하는 설정이다.
+
+        List<Order> orders = orderRepository.findAllWithMemberDelivery(offset, limit);
+        List<OrderDto> result = orders.stream()
+                .map(o -> new OrderDto(o))
+                .collect(toList());
+
+        return result;
+    }
+    
+    // 챕터 결론
+    // toOne 관계는 fetch join을 이용하여 최적화 하고,
+    // 컬렉션, toMany 등 나머지는 hibernate의 default_batch_fetch_size 옵션으로 최적화하자
 
     @Data
     static class OrderDto {

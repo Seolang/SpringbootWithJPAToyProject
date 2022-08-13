@@ -13,6 +13,7 @@ spring:
 #        System out으로 출력됨
 #        show_sql: true
         format_sql: true
+        default_batch_fetch_size: 100 # toMany 관계 페이징을 위한 최적화
 
 logging:
   level:
