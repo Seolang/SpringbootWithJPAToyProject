@@ -58,6 +58,18 @@ public class OrderQueryRepository {
         return result;
     }
 
+    // 하나의 쿼리로 모든 값을 다 받아오기때문에 items 갯수만큼 데이터가 뻥튀기된다.
+    public List<OrderFlatDto> findAllByDto_flat() {
+        return em.createQuery(
+                        "select new jpabook.jpashop.repository.order.query.OrderFlatDto(o.id, m.name, o.orderDate, o.status, d.address, i.name, oi.orderPrice, oi.count)" +
+                                " from Order o" +
+                                " join o.member m" +
+                                " join o.delivery d" +
+                                " join o.orderItems oi" +
+                                " join oi.item i", OrderFlatDto.class)
+                .getResultList();
+    }
+
     private List<Long> toOrderIds(List<OrderQueryDto> result) {
         List<Long> orderIds = result.stream()
                 .map(o -> o.getOrderId())
@@ -78,6 +90,4 @@ public class OrderQueryRepository {
                 .collect(Collectors.groupingBy(orderItemQueryDto -> orderItemQueryDto.getOrderId()));
         return orderItemMap;
     }
-
-
 }
