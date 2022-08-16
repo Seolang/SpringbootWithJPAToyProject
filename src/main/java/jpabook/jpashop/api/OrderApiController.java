@@ -6,6 +6,8 @@ import jpabook.jpashop.domain.OrderItem;
 import jpabook.jpashop.domain.OrderStatus;
 import jpabook.jpashop.repository.OrderRepository;
 import jpabook.jpashop.repository.OrderSearch;
+import jpabook.jpashop.repository.order.query.OrderQueryDto;
+import jpabook.jpashop.repository.order.query.OrderQueryRepository;
 import lombok.Data;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +26,7 @@ import static java.util.stream.Collectors.*;
 public class OrderApiController {
 
     private final OrderRepository orderRepository;
+    private final OrderQueryRepository orderQueryRepository;
 
     @GetMapping("/api/v1/orders")
     public List<Order> ordersV1() {
@@ -67,7 +70,7 @@ public class OrderApiController {
     }
 
     @GetMapping("/api/v3.1/orders")
-    public List<OrderDto> ordersV3_page(
+    public List<OrderDto> ordersV3_paging(
             @RequestParam(value = "offset", defaultValue = "0") int offset,
             @RequestParam(value = "limit", defaultValue = "100") int limit
     ) {
@@ -90,6 +93,11 @@ public class OrderApiController {
     // 챕터 결론
     // toOne 관계는 fetch join을 이용하여 최적화 하고,
     // 컬렉션, toMany 등 나머지는 hibernate의 default_batch_fetch_size 옵션으로 최적화하자
+
+    @GetMapping("/api/v4/orders")
+    public List<OrderQueryDto> ordersV4() {
+        return orderQueryRepository.findOrderQueryDtos();
+    }
 
     @Data
     static class OrderDto {
