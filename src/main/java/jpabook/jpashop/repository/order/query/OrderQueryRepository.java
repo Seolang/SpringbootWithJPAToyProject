@@ -51,9 +51,9 @@ public class OrderQueryRepository {
     public List<OrderQueryDto> findAllByDto_optimization() {
         List<OrderQueryDto> result = findOrders();  // 쿼리 1번
 
-        Map<Long, List<OrderItemQueryDto>> orderItemMap = findOrderItemMap(toOrderIds(result));
+        Map<Long, List<OrderItemQueryDto>> orderItemMap = findOrderItemMap(toOrderIds(result)); // 쿼리 1번
 
-        result.forEach(o-> o.setOrderItems(orderItemMap.get(o.getOrderId())));  // 쿼리 1번
+        result.forEach(o-> o.setOrderItems(orderItemMap.get(o.getOrderId())));
 
         return result;
     }
