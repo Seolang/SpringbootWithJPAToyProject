@@ -14,6 +14,7 @@ spring:
 #        show_sql: true
         format_sql: true
         default_batch_fetch_size: 100 # toMany 관계 페이징을 위한 최적화
+    open-in-view: false
 
 logging:
   level:
