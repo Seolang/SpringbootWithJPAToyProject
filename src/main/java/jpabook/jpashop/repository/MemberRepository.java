@@ -1,37 +1,17 @@
 package jpabook.jpashop.repository;
 
 import jpabook.jpashop.domain.Member;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.util.List;
 
-@Repository
-@RequiredArgsConstructor // em에 대하여 생성자를 통한 의존성 주입 생성
-public class MemberRepository {
+public interface MemberRepository extends JpaRepository<Member, Long> {
+    
+    // findById와 findAll은 JpaRepository의 기본 함수를 상속받는다
 
-    //@PersistenceContext or @Autowired
-    private final EntityManager em;
-
-    public void save(Member member) {
-        em.persist(member);
-    }
-
-    public Member findOne(Long id) {
-        return em.find(Member.class, id);
-    }
-
-    public List<Member> findAll() {
-        return em.createQuery("select m from Member m", Member.class)
-                .getResultList();
-    }
-
-    public List<Member> findByName(String name) {
-        return em.createQuery("select m from Member m where m.name = :name", Member.class)
-                .setParameter("name", name)
-                .getResultList();
-    }
-
+    // findBy* 형식으로 함수를 지정하면 지금과 같은 경우
+    // select m from Member m where m.name = ?
+    // 라는 JPQL을 자동으로 생성해준다
+    List<Member> findByName(String name); // 이러면 실행됩니다...
+    
 }
