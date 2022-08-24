@@ -19,8 +19,7 @@ public class MemberService {
     // Constructor Injection 방식
     private final MemberRepository memberRepository;
 
-    //@Autowired 없어도 작동한다
-//    public MemberService(MemberRepository memberRepository) {
+//    public MemberService(MemberRepository memberRepository) {     //@Autowired가 없어도 작동한다
 //        this.memberRepository = memberRepository;
 //    }
     
